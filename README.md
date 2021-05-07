@@ -20,6 +20,7 @@ Include a list of any third-party libraries used in the Readme of the project.
 * mapbox-gl
 * uuid
 * react-icons
+* mapbox-gl-draw
 
 # Todo list
 
