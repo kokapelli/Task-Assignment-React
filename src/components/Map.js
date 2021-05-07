@@ -1,36 +1,42 @@
-import React, {Component} from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import config from '../config';
+import './Map.css';
 
 mapboxgl.accessToken = config.apiKey;
 
-class Map extends Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      longitude: 17.6389,
-      latitude: 59.8586,
-      zoom: 15
-    }
-  }
+const Map = () => {
+  const mapContainerRef = useRef(null);
 
-  componentDidMount(){
+  const [lng, setLng] = useState(17.6389);
+  const [lat, setLat] = useState(59.8586);
+  const [zoom, setZoom] = useState(15);
+
+  useEffect(() => {
     const map = new mapboxgl.Map({
-      container: this.mapContainer,
-      style: 'mapbox://styles/mapbox/streets-v11', 
-      center: [this.state.longitude, this.state.latitude],
-      zoom: 15
-    })
-    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-  }
+      container: mapContainerRef.current,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [lng, lat],
+      zoom: zoom
+    });
+    
+    // Add navigation control (the +/- zoom buttons)
+    map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
-  render(){
-    return(
-      <div>
-        <div ref = {el => this.mapContainer = el} style={{width: '100%', height: '100vh'}}/>
-      </div>
-    )
-  }
-}
+    map.on('move', () => {
+      setLng(map.getCenter().lng.toFixed(4));
+      setLat(map.getCenter().lat.toFixed(4));
+      setZoom(map.getZoom().toFixed(2));
+    });
+
+    return () => map.remove();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return(
+    <div>
+      <div className='map' ref={mapContainerRef} />
+    </div>
+  );
+};
 
 export default Map;
