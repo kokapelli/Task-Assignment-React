@@ -1,22 +1,26 @@
 import React, { useRef, useEffect, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
+import MapBoxGL from 'mapbox-gl';
 import MapboxDraw from "mapbox-gl-draw";
-import 'mapbox-gl-draw/dist/mapbox-gl-draw.css'
-import config from '../config';
+import Turf from 'turf';
+import 'mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import './Map.css';
+import config from '../config';
 import Sidebar from './Sidebar';
 
-mapboxgl.accessToken = config.apiKey;
+MapBoxGL.accessToken = config.apiKey;
 
+// Investigate situation where Map is re-rendered
+// Everytime a movement takes place.
 const Map = () => {
   const mapContainerRef = useRef(null);
 
+  const [lines, setLine] = useState([]);
   const [lat, setLat] = useState(59.8586);
   const [lng, setLng] = useState(17.6389);
   const [zoom, setZoom] = useState(15);
 
   useEffect(() => {
-    const map = new mapboxgl.Map({
+    const map = new MapBoxGL.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [lng, lat],
@@ -30,7 +34,7 @@ const Map = () => {
     });
 
     // Add navigation control
-    map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+    map.addControl(new MapBoxGL.NavigationControl(), 'bottom-right');
     // Add drawing control
 
     let draw = new MapboxDraw({
@@ -46,21 +50,39 @@ const Map = () => {
     map.addControl(draw, 'bottom-right');
 
     map.on('click', function(e) {
-      // The event object (e) contains information like the
-      // coordinates of the point on the map that was clicked.
-      console.log('A click event has occurred at ' + e.lngLat);
       let selected = draw.getSelected()
       if (selected.features.length != 0){
         console.log(selected)
       }
     });
 
+    map.on('draw.create', addItem)
+
+    function addItem(line){
+      console.log(line)
+      const dist = Turf.lineDistance({
+        "type": "LineString",
+        "coordinates": line.features[0].geometry.coordinates,
+      }, 'kilometres').toFixed(3)
+
+      const item = {
+        id: line.features[0].id,
+        dist: dist,
+        cost: dist*100,
+        coords: line.features[0].geometry.coordinates
+      }
+      setLine(oldArray => [...oldArray, item]);
+    }
+
+
     return () => map.remove();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return(
     <div>
-      <Sidebar />
+      <Sidebar 
+        lines = {lines} 
+        onChange={setLine}/>
       <div className='map' ref={mapContainerRef} />
     </div>
   );

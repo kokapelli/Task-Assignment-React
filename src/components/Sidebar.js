@@ -1,32 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, setState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import './Sidebar.css';
 
-const mockItems = [
-  {
-    id: 1,
-    distance: 100,
-    cost: 200,
-    icon: <AiIcons.AiOutlineArrowsAlt/>
-  },
-  {
-    id: 2,
-    distance: 300,
-    cost: 600,
-    icon: <AiIcons.AiOutlineArrowsAlt/>
-  },
-  {
-    id: 3,
-    distance: 50,
-    cost: 100,
-    icon: <AiIcons.AiOutlineArrowsAlt/>
-  }
-]
-
-function Sidebar() {
+const Sidebar = ({lines}) => {
   const [sidebar, setSidebar] = useState(false);
-  
   const showSidebar = () => setSidebar(!sidebar);
 
   return (
@@ -45,11 +23,16 @@ function Sidebar() {
           <div className = 'order-text'>
             Order
           </div>
-          {mockItems.map((item, index) =>{
+          {lines.map((item, index) =>{
             return (
               <li key ={index} className={'sidebar-text'}>
-                {item.icon}
-                <span> {item.distance}m = {item.cost}:- </span>
+                <li> {index} </li>
+                  <ul>
+                    Distance: {item.dist}km
+                  </ul>
+                  <ul>
+                    Cost: {item.cost}:-
+                  </ul>
               </li>
             )
           })}

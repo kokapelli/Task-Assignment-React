@@ -16,23 +16,23 @@ Documentation for the Mapbox SDK is available [here](https://docs.mapbox.com/map
 Include a list of any third-party libraries used in the Readme of the project.
 
 ## Third-Party Software
-* express
 * mapbox-gl
 * uuid
 * react-icons
 * mapbox-gl-draw
+* turf
 
 # Todo list
 
 - [x] Connect with the Mapbox SDK
 - [x] Create a skeleton structure of the application
 - [x] Come up with and create an UI
-- [ ] Click/click and drag event compatibility
-- [ ] Capacity to draw a line
-- [ ] A way to display the line distance and cost conversion
-- [ ] Side menu that lists the lines, their distance and cost on the map
-- [ ] Button connection with the Order class.
+- [x] Click/click and drag event compatibility
+- [x] Capacity to draw a line
+- [x] A way to display the line distance and cost conversion
+- [x] Side menu that lists the lines, their distance and cost on the map
 - [ ] Button to submit the order to the imaginary backend
+- [ ] Update order item cost/distance as it is changed in real-time
 - [ ] Add functionality to directly move to an address/city for improved UX
 - [ ] When an order item is clicked, highlight the line
 - [ ] Make sidebar and navigation bar adjustable according to window size
