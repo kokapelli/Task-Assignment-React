@@ -14,6 +14,7 @@ MapBoxGL.accessToken = config.apiKey;
 const Map = () => {
   // Constructor
   const [lines, setLines] = useState([]);
+  const [selected, setSelection] = useState([]);
   const [lat, setLat] = useState(59.8586);
   const [lng, setLng] = useState(17.6389);
   const [zoom, setZoom] = useState(15);
@@ -21,6 +22,11 @@ const Map = () => {
   const mapContainerRef = useRef(null);
   const stateRef = useRef();
   stateRef.current = lines;
+
+  // Pre-set selections are necessary for the deletio process
+  const selectionRef = useRef();
+  selectionRef.current = selected;
+  
   
   const submitClickCallback = () => {
     // Remove MapBox Line as well
@@ -90,6 +96,7 @@ const Map = () => {
       let newHighlightedList = stateRef.current;
       // If a an existing line was clicked, highlight it
       if (selected.features.length !== 0){
+        setSelection([...selected.features])
         for (let i = 0; i < selected.features.length; i++) {
           var index = newHighlightedList.findIndex(item => item.id === selected.features[i].id)
           newHighlightedList[index].highlighted = true;
@@ -124,9 +131,14 @@ const Map = () => {
     }
 
     function deleteItem(){
-      console.log("Deleting")
+      let selected = selectionRef.current;
+      let newHighlightedList = stateRef.current;
+      for (let i = 0; i < selected.length; i++) {
+        var index = newHighlightedList.findIndex(item => item.id === selected[i].id)
+        newHighlightedList.splice(index, 1);
+      }
+      setLines([...newHighlightedList]);
     }
-
     return () => map.remove();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

@@ -34,8 +34,10 @@ Include a list of any third-party libraries used in the Readme of the project.
 - [x] Button to submit the order to the imaginary backend
 - [x] When an order item is clicked, highlight the line
 - [ ] Add functionality to directly move to an address/city for improved UX
-- [ ] (Found no documentation to trigger a line from code) Order to line highlighting 
-- [ ] Update order item cost/distance as it is changed in real-time
+- [x] Update order item cost/distance as it is changed in real-time
+- [x] Deleting a line should delete the item from the order
+- [ ] Suubmitting an order should remove existing lines and items in order
 - [ ] Investigate solution to side bar not being scrollable
 - [ ] Make sidebar and navigation bar adjustable according to window size
 - [ ] Refactor solution
+- [ ] *(FAILED: Found no documentation to trigger/activate a MapBox line from code) Order to line highlighting *
