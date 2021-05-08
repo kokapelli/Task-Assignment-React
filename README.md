@@ -31,8 +31,11 @@ Include a list of any third-party libraries used in the Readme of the project.
 - [x] Capacity to draw a line
 - [x] A way to display the line distance and cost conversion
 - [x] Side menu that lists the lines, their distance and cost on the map
-- [ ] Button to submit the order to the imaginary backend
-- [ ] Update order item cost/distance as it is changed in real-time
+- [x] Button to submit the order to the imaginary backend
+- [x] When an order item is clicked, highlight the line
 - [ ] Add functionality to directly move to an address/city for improved UX
-- [ ] When an order item is clicked, highlight the line
+- [ ] (Found no documentation to trigger a line from code) Order to line highlighting 
+- [ ] Update order item cost/distance as it is changed in real-time
+- [ ] Investigate solution to side bar not being scrollable
 - [ ] Make sidebar and navigation bar adjustable according to window size
+- [ ] Refactor solution
