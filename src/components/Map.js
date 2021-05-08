@@ -103,12 +103,28 @@ const Map = () => {
       setLines([...newHighlightedList]);
     }
 
-    function deleteItem(){
-      console.log("Deleting")
+    function updateItem(){
+      let selected = draw.getSelected()
+      let newHighlightedList = stateRef.current;
+
+      for (let i = 0; i < selected.features.length; i++) {
+        var index = newHighlightedList.findIndex(item => item.id === selected.features[i].id)
+
+        // Repetetive?
+        const dist = (Math.round(Turf.lineDistance({
+          "type": "LineString",
+          "coordinates": selected.features[i].geometry.coordinates,
+        }, 'kilometres') * 100) / 100).toFixed(2);
+
+        newHighlightedList[index].highlighted = selected.features[i].geometry.coordinates;
+        newHighlightedList[index].dist = dist;
+        newHighlightedList[index].cost = dist * 100;
+      }
+      setLines([...newHighlightedList]);
     }
 
-    function updateItem(){
-      console.log("Updating")
+    function deleteItem(){
+      console.log("Deleting")
     }
 
     return () => map.remove();
