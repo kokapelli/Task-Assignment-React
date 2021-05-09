@@ -39,13 +39,12 @@
   }
 
 .sidebar-order{
-  height: 100%;
+  height: 100vh;
   overflow-y: scroll;
 }
 
 .sidebar-border{
   bottom: -60px;
-  content: "";
   position: absolute;
   width: 100%;
   height: 100vh;
@@ -62,7 +61,6 @@
   padding-top: 5px;
   padding-left: 16px;
   padding-bottom: 5px;
-  list-style: none;
   user-select: none;
   border-bottom: #e1e1e1 solid;
 }
@@ -102,7 +100,6 @@
   width: 100%;
   border: none;
   color: white;
-  text-align: center;
   font-size: 16px;
   cursor:pointer;
   user-select: none;

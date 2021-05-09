@@ -16,8 +16,9 @@ Documentation for the Mapbox SDK is available [here](https://docs.mapbox.com/map
 Include a list of any third-party libraries used in the Readme of the project.
 
 ## Running
-1. Run <code>node server.js</code> in *draw-distance/src/backend*
-2. Run <code>npm start</code> in *draw-distance/src/*
+1. Create and add API key and desired server port number to <code>draw-distance/src/config.js</code>. Alternatively just hard code them in *draw-distance/src/frontend/components/Map.js* and *draw-distance/src/backend/server.js*
+2. Run <code>node server.js</code> in *draw-distance/src/backend*
+3. Run <code>npm start</code> in *draw-distance/src/*
 
 ## Third-Party Software
 * mapbox-gl
@@ -42,11 +43,11 @@ Include a list of any third-party libraries used in the Readme of the project.
 - [x] Update order item cost/distance as it is changed in real-time
 - [x] Deleting a line should delete the item from the order
 - [x] Add mock backend
-- [ ] Resolve UI issue with navigation icons being offset
+- [x] Resolve UI issue with navigation icons being offset
 - [x] Submitting an order should remove existing lines and items in order
 - [x] Investigate solution to side bar not being scrollable
 - [ ] Make sidebar and navigation bar adjustable according to window size
-- [ ] Refactor solution
+- [ ] Conditional rendering on submit button to be grayed out when the order is empty
 - [ ] *(FAILED: Order to line highlighting Found no documentation to trigger/activate a MapBox line from code)  *
 
 
@@ -61,3 +62,7 @@ Include a list of any third-party libraries used in the Readme of the project.
 * Mapbox keybind for LineString does not work.
 
 * Placing an order will only work every other time it is pressed due to poor man's boolean flipping approach.
+
+* Occasionally the float round up will bug and produce a long sequence of decimals
+
+* When the order list becomes scrollable, depending on zoom the last item will be blocked by the sidebar footer.
