@@ -1,4 +1,4 @@
-import Map from './components/Map';
+import Map from './frontend/components/Map';
 import './App.css';
 
 

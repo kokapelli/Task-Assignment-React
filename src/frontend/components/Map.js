@@ -3,9 +3,9 @@ import MapboxGL from 'mapbox-gl';
 import MapboxDraw from "mapbox-gl-draw";
 import 'mapbox-gl/dist/mapbox-gl.css'
 import 'mapbox-gl-draw/dist/mapbox-gl-draw.css';
-import Turf from 'turf';
-import config from '../config';
+import config from '../../config';
 import Sidebar from './Sidebar';
+import { getDistanceInfo } from './../misc.js';
 import './Map.css';
 
 MapboxGL.accessToken = config.apiKey;
@@ -14,6 +14,8 @@ const Map = () => {
   
   const [lines, setLines] = useState([]);
   const [selected, setSelection] = useState([]);
+  const [wipe, setWipe] = useState(false);
+
   const [lat, setLat] = useState(59.8586);
   const [lng, setLng] = useState(17.6389);
   const [zoom, setZoom] = useState(15);
@@ -25,11 +27,11 @@ const Map = () => {
   // Pre-set selections are necessary for the deletion process
   const selectionRef = useRef();
   selectionRef.current = selected;
-  
+
   const submitClickCallback = () => {
     // Remove MapBox Line as well
     console.log("Submit clicked")
-    setLines([])
+    setWipe(true)
   }
 
   useEffect(() => {
@@ -88,16 +90,14 @@ const Map = () => {
     }
 
     function addItem(line){
-      const dist = (Turf.lineDistance({
-        "type": "LineString",
-        "coordinates": line.features[0].geometry.coordinates,
-      }, 'kilometres')).toFixed(2);
+
+      const [dist, cost] = getDistanceInfo(line.features[0].geometry.coordinates, 100);
 
       const item = {
         id: line.features[0].id,
         highlighted: false,
         dist: dist,
-        cost: dist * 100,
+        cost: cost,
         coords: line.features[0].geometry.coordinates
       }
       setLines(oldArray => [...oldArray, item]);
@@ -109,16 +109,12 @@ const Map = () => {
 
       for (let i = 0; i < selected.features.length; i++) {
         var index = newHighlightedList.findIndex(item => item.id === selected.features[i].id)
-
-        // Repetetive?
-        const dist = Turf.lineDistance({
-          "type": "LineString",
-          "coordinates": selected.features[i].geometry.coordinates,
-        }, 'kilometres').toFixed(2);
+        
+        const [dist, cost] = getDistanceInfo(selected.features[i].geometry.coordinates, 100);
 
         newHighlightedList[index].highlighted = selected.features[i].geometry.coordinates;
         newHighlightedList[index].dist = dist;
-        newHighlightedList[index].cost = dist * 100;
+        newHighlightedList[index].cost = cost;
       }
       setLines([...newHighlightedList]);
     }
@@ -132,14 +128,21 @@ const Map = () => {
       }
       setLines([...newHighlightedList]);
     }
+    // Whenever n order is submitted, re-rended the map to remove all lines
+    // and flush the items
+    if(wipe){
+      setSelection([])
+      setLines([])
+    }
+
     return () => map.remove();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [wipe]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return(
     <div>
       <Sidebar 
-        submitClickCallback = {submitClickCallback}
-        lines = {lines}/>
+        lines = {lines}
+        submitClickCallback = { submitClickCallback }/>
       <div className='map' ref={mapContainerRef} />
     </div>
   );

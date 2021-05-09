@@ -15,14 +15,19 @@ Documentation for the Mapbox SDK is available [here](https://docs.mapbox.com/map
 ## Hand In
 Include a list of any third-party libraries used in the Readme of the project.
 
+## Running
+1. Run <code>node server.js</code> in *draw-distance/src/backend*
+2. Run <code>npm start</code> in *draw-distance/src/*
+
 ## Third-Party Software
 * mapbox-gl
 * mapbox-gl-draw
 * mapbox-gl-geocoder
 * react-icons
 * turf
+* express
 
-# Todo list
+## Todo list
 
 - [x] Connect with the Mapbox SDK
 - [x] Create a skeleton structure of the application
@@ -36,10 +41,23 @@ Include a list of any third-party libraries used in the Readme of the project.
 - [ ] Add functionality to directly move to an address/city for improved UX
 - [x] Update order item cost/distance as it is changed in real-time
 - [x] Deleting a line should delete the item from the order
-- [ ] Add mock backend
+- [x] Add mock backend
 - [ ] Resolve UI issue with navigation icons being offset
-- [ ] Submitting an order should remove existing lines and items in order
-- [ ] Investigate solution to side bar not being scrollable
+- [x] Submitting an order should remove existing lines and items in order
+- [x] Investigate solution to side bar not being scrollable
 - [ ] Make sidebar and navigation bar adjustable according to window size
 - [ ] Refactor solution
 - [ ] *(FAILED: Order to line highlighting Found no documentation to trigger/activate a MapBox line from code)  *
+
+
+## Known Issues
+
+* Selectively highlighting Mapbox lines consecutively will keep the highlighted in the order section. The extra highlighted values will cause the order items to all be removed while un-targeted lines will remain on the map. Thus causing a discrepancy between the order items and the lines on the map.
+
+* The web application lacks dynamicity for window resizing.
+
+* Main view price remains beneath side bar. Can be fixed with conditional rendering based on the boolean value of sidebar state.
+
+* Mapbox keybind for LineString does not work.
+
+* Placing an order will only work every other time it is pressed due to poor man's boolean flipping approach.
