@@ -1,18 +1,17 @@
 import React, { useRef, useEffect, useState } from 'react';
-import MapBoxGL from 'mapbox-gl';
+import MapboxGL from 'mapbox-gl';
 import MapboxDraw from "mapbox-gl-draw";
-import Turf from 'turf';
+import 'mapbox-gl/dist/mapbox-gl.css'
 import 'mapbox-gl-draw/dist/mapbox-gl-draw.css';
-import './Map.css';
+import Turf from 'turf';
 import config from '../config';
 import Sidebar from './Sidebar';
+import './Map.css';
 
-MapBoxGL.accessToken = config.apiKey;
+MapboxGL.accessToken = config.apiKey;
 
-// Investigate situation where Map is re-rendered
-// Everytime a movement takes place.
 const Map = () => {
-  // Constructor
+  
   const [lines, setLines] = useState([]);
   const [selected, setSelection] = useState([]);
   const [lat, setLat] = useState(59.8586);
@@ -23,10 +22,9 @@ const Map = () => {
   const stateRef = useRef();
   stateRef.current = lines;
 
-  // Pre-set selections are necessary for the deletio process
+  // Pre-set selections are necessary for the deletion process
   const selectionRef = useRef();
   selectionRef.current = selected;
-  
   
   const submitClickCallback = () => {
     // Remove MapBox Line as well
@@ -35,21 +33,15 @@ const Map = () => {
   }
 
   useEffect(() => {
-    const map = new MapBoxGL.Map({
+    const map = new MapboxGL.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [lng, lat],
       zoom: zoom
     });
 
-    map.on('move', () => {
-      setLng(map.getCenter().lng.toFixed(4));
-      setLat(map.getCenter().lat.toFixed(4));
-      setZoom(map.getZoom().toFixed(2));
-    });
-
     // Add navigation control
-    map.addControl(new MapBoxGL.NavigationControl(), 'bottom-right');
+    map.addControl(new MapboxGL.NavigationControl(), 'bottom-right');
 
     // Add drawing control
     let draw = new MapboxDraw({
@@ -62,39 +54,24 @@ const Map = () => {
       },
     });
       
+    // Add drawing control
     map.addControl(draw, 'bottom-right');
 
+    // MAp Events
+    map.on('move', () => {
+      setLng(map.getCenter().lng.toFixed(4));
+      setLat(map.getCenter().lat.toFixed(4));
+      setZoom(map.getZoom().toFixed(2));
+    });
+    
     map.on('click', selectLines);
     map.on('draw.create', addItem);
-    map.on('draw.delete', deleteItem);
     map.on('draw.update', updateItem);
+    map.on('draw.delete', deleteItems);
 
-    function addItem(line){
-      const dist = (Math.round(Turf.lineDistance({
-        "type": "LineString",
-        "coordinates": line.features[0].geometry.coordinates,
-      }, 'kilometres') * 100) / 100).toFixed(2);
-
-      const item = {
-        id: line.features[0].id,
-        highlighted: false,
-        dist: dist,
-        cost: dist * 100,
-        coords: line.features[0].geometry.coordinates
-      }
-      setLines(oldArray => [...oldArray, item]);
-    }
-
-    /*
-      Highlight the corresponding order item when 
-      selecting the corresponding line on the map
-      Todo, enable multi line highlighting
-    */
     function selectLines(){
       let selected = draw.getSelected()
-      //console.log(draw.get(selected.features[0].id))
       let newHighlightedList = stateRef.current;
-      // If a an existing line was clicked, highlight it
       if (selected.features.length !== 0){
         setSelection([...selected.features])
         for (let i = 0; i < selected.features.length; i++) {
@@ -110,6 +87,22 @@ const Map = () => {
       setLines([...newHighlightedList]);
     }
 
+    function addItem(line){
+      const dist = (Turf.lineDistance({
+        "type": "LineString",
+        "coordinates": line.features[0].geometry.coordinates,
+      }, 'kilometres')).toFixed(2);
+
+      const item = {
+        id: line.features[0].id,
+        highlighted: false,
+        dist: dist,
+        cost: dist * 100,
+        coords: line.features[0].geometry.coordinates
+      }
+      setLines(oldArray => [...oldArray, item]);
+    }
+
     function updateItem(){
       let selected = draw.getSelected()
       let newHighlightedList = stateRef.current;
@@ -118,10 +111,10 @@ const Map = () => {
         var index = newHighlightedList.findIndex(item => item.id === selected.features[i].id)
 
         // Repetetive?
-        const dist = (Math.round(Turf.lineDistance({
+        const dist = Turf.lineDistance({
           "type": "LineString",
           "coordinates": selected.features[i].geometry.coordinates,
-        }, 'kilometres') * 100) / 100).toFixed(2);
+        }, 'kilometres').toFixed(2);
 
         newHighlightedList[index].highlighted = selected.features[i].geometry.coordinates;
         newHighlightedList[index].dist = dist;
@@ -130,7 +123,7 @@ const Map = () => {
       setLines([...newHighlightedList]);
     }
 
-    function deleteItem(){
+    function deleteItems(){
       let selected = selectionRef.current;
       let newHighlightedList = stateRef.current;
       for (let i = 0; i < selected.length; i++) {

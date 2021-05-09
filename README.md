@@ -17,9 +17,9 @@ Include a list of any third-party libraries used in the Readme of the project.
 
 ## Third-Party Software
 * mapbox-gl
-* uuid
-* react-icons
 * mapbox-gl-draw
+* mapbox-gl-geocoder
+* react-icons
 * turf
 
 # Todo list
@@ -36,8 +36,10 @@ Include a list of any third-party libraries used in the Readme of the project.
 - [ ] Add functionality to directly move to an address/city for improved UX
 - [x] Update order item cost/distance as it is changed in real-time
 - [x] Deleting a line should delete the item from the order
-- [ ] Suubmitting an order should remove existing lines and items in order
+- [ ] Add mock backend
+- [ ] Resolve UI issue with navigation icons being offset
+- [ ] Submitting an order should remove existing lines and items in order
 - [ ] Investigate solution to side bar not being scrollable
 - [ ] Make sidebar and navigation bar adjustable according to window size
 - [ ] Refactor solution
-- [ ] *(FAILED: Found no documentation to trigger/activate a MapBox line from code) Order to line highlighting *
+- [ ] *(FAILED: Order to line highlighting Found no documentation to trigger/activate a MapBox line from code)  *

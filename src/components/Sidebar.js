@@ -10,6 +10,7 @@ const Sidebar = ({ submitClickCallback, lines }) => {
   const getTotalCost = (productList) => {
     return productList.reduce((totalCost, { cost: itemCost }) => totalCost + parseFloat(itemCost), 0);
   };
+  
   return (
     <>
       <div className="navbar">
