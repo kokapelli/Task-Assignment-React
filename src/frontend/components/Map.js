@@ -15,10 +15,6 @@ const Map = () => {
   const [selected, setSelection] = useState([]);
   const [wipe, setWipe] = useState(false);
 
-  const [lat, setLat] = useState(59.8586);
-  const [lng, setLng] = useState(17.6389);
-  const [zoom, setZoom] = useState(15);
-
   const mapContainerRef = useRef(null);
   const stateRef = useRef();
   stateRef.current = lines;
@@ -36,8 +32,8 @@ const Map = () => {
     const map = new MapboxGL.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/mapbox/streets-v11",
-      center: [lng, lat],
-      zoom: zoom,
+      center: [17.6389, 59.8586],
+      zoom: 15,
     });
 
     // Add navigation control
@@ -56,13 +52,6 @@ const Map = () => {
 
     // Add drawing control
     map.addControl(draw, "bottom-right");
-
-    // Map Events
-    map.on("move", () => {
-      setLng(map.getCenter().lng.toFixed(4));
-      setLat(map.getCenter().lat.toFixed(4));
-      setZoom(map.getZoom().toFixed(2));
-    });
 
     map.on("click", selectLines);
     map.on("draw.create", addItem);
