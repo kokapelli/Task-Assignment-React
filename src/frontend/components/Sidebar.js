@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import { getTotalCost } from "./../misc.js";
 import { submitRequest } from "./../submitRequest.js";
+import SidebarFooter from "./SidebarFooter";
+import Header from "./Header";
+import Order from "./Order";
 import "./Sidebar.css";
 
 const Sidebar = ({ lines, submitClickCallback }) => {
@@ -13,48 +15,20 @@ const Sidebar = ({ lines, submitClickCallback }) => {
     getTotalCost(lines);
     submitRequest(getTotalCost(lines));
 
-    setSidebar(false);
+    showSidebar();
     submitClickCallback();
   };
 
   return (
     <>
-      <div className="navbar">
-        <div className="navbar-left-container">
-          <FaIcons.FaBars className="menu-bars" onClick={showSidebar} />
-          <div style={{ marginLeft: "20px" }}>
-            Price: {getTotalCost(lines)} SEK
-          </div>
-        </div>
-        <div className="navbar-text">Hampus Falk</div>
-      </div>
+      <Header totalPrice={getTotalCost(lines)} showSidebar={showSidebar} />
       <div className={sidebar ? "sidebar active" : "sidebar"}>
         <div className="sidebar-toggle">
           <AiIcons.AiOutlineClose className="menu-bars" onClick={showSidebar} />
         </div>
         <div className="order-text"> Order </div>
-        <ul className="sidebar-order">
-          {lines.map((item, index) => {
-            return (
-              <li
-                key={index}
-                className={`sidebar-text ${
-                  item.highlighted ? "sidebar-text-active" : ""}`}>
-                <div> {index} </div>
-                <ul>Distance: {item.dist}km</ul>
-                <ul>Cost: {item.cost} SEK</ul>
-              </li>
-            );
-          })}
-        </ul>
-        <div className="submit-footer">
-          <div className="footer-text">Total Cost </div>
-          <div className="footer-text">{getTotalCost(lines)} SEK </div>
-          <button onClick={submitOrder} className="submit-button">
-            Place Order
-          </button>
-        </div>
-        <div className="sidebar-border" />
+        <Order lines = {lines} />
+        <SidebarFooter totalPrice={getTotalCost(lines)} submitOrder={submitOrder} />
       </div>
     </>
   );

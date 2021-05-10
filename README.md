@@ -61,7 +61,7 @@ Include a list of any third-party libraries used in the Readme of the project.
 
 * Mapbox keybind for LineString does not work.
 
-* Placing an order will only work every other time it is pressed due to poor man's boolean flipping approach.
+* Placing an order will only work once it is pressed due to poor man's boolean flipping approach.
 
 * Occasionally the float round up will bug and produce a long sequence of decimals
 

@@ -1,0 +1,17 @@
+.sidebar-order {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.sidebar-text {
+  padding-top: 5px;
+  padding-left: 16px;
+  padding-bottom: 5px;
+  user-select: none;
+  border-bottom: #e1e1e1 solid;
+}
+
+.sidebar-text-active {
+  background-color: #3887be;
+  color: #ffffff;
+}

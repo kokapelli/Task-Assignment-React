@@ -1,0 +1,22 @@
+.header{
+    background-color: #ffffff;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    border-bottom-style: solid;
+    justify-content: space-between;
+  }
+  
+  .header-left-container{
+    display:flex;
+    align-items: center;
+    user-select: none;
+  }
+
+  .header-text{
+    font-size: 30px;
+    padding-right: 10px;
+    user-select: none;
+  }
+  
